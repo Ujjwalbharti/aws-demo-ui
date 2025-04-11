@@ -13,12 +13,12 @@ export async function loginUser(
       },
       body: JSON.stringify(credentials),
     });
+    const data = await response.json();
 
     if (!response.ok) {
-      return { status: response.status, data: null };
+      return { status: response.status, data: data };
     }
 
-    const data = await response.json();
     return {
       status: response.status,
       data: {
@@ -27,11 +27,12 @@ export async function loginUser(
       },
     };
   } catch (error) {
+    console.log(error)
     return { status: 500, data: null };
   }
 }
 
-export async function signUp(
+export async function signUpUser(
   request: SignUpRequest
 ): Promise<ApiResponse<string | null>> {
   try {
@@ -42,17 +43,18 @@ export async function signUp(
       },
       body: JSON.stringify(request),
     });
+    const data = await response.json();
 
     if (!response.ok) {
-      return { status: response.status, data: null };
+      return { status: response.status, data: data };
     }
 
-    const data = await response.json();
     return {
       status: response.status,
       data: data,
     };
   } catch (error) {
+    console.log(error)
     return { status: 500, data: null };
   }
 }
