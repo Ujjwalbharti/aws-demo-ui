@@ -1,26 +1,19 @@
 "use client";
 
+import Dashboard from "@/component/Dashboard";
+import Logout from "@/component/buttons/Logout";
 import RequireAuth from "@/component/RequireAuth";
 import { useGlobalContext } from "@/context/GlobalContext";
+import CreateQueueButton from "@/component/buttons/CreateQueue";
 
 export default function HomePage() {
-  const { deleteAuthToken } = useGlobalContext();
-
-  const handleLogout = () => {
-    deleteAuthToken();
-  };
+  const { token } = useGlobalContext();
 
   return (
     <RequireAuth>
-      <div className="p-4">
-        <h1 className="text-xl font-bold mb-4">Hello World</h1>
-        <button
-          onClick={handleLogout}
-          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-        >
-          Logout
-        </button>
-      </div>
+      <Logout />
+      <Dashboard token={token} />
+      <CreateQueueButton/>
     </RequireAuth>
   );
 }
