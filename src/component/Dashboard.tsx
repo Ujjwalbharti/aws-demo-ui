@@ -6,9 +6,10 @@ import Link from "next/link";
 
 interface DashboardProps {
   token: string | null;
+  deleteAuthToken: () => void;
 }
 
-export default function Dashboard({ token }: DashboardProps) {
+export default function Dashboard({ token, deleteAuthToken }: DashboardProps) {
   const [queues, setQueues] = useState<Queue[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -18,6 +19,9 @@ export default function Dashboard({ token }: DashboardProps) {
       setLoading(true);
       try {
         const response = await queueService.fetchAllQueues(token);
+        if (response.status === 401) {
+          deleteAuthToken();
+        }
         setQueues(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error("Failed to fetch queues:", error);

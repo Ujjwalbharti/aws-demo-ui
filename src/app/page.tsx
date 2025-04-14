@@ -7,12 +7,12 @@ import { useGlobalContext } from "@/context/GlobalContext";
 import CreateQueueButton from "@/component/buttons/CreateQueue";
 
 export default function HomePage() {
-  const { token } = useGlobalContext();
+  const { token, deleteAuthToken } = useGlobalContext();
 
   return (
     <RequireAuth>
       <Logout />
-      <Dashboard token={token} />
+      <Dashboard token={token} deleteAuthToken={deleteAuthToken} />
       <CreateQueueButton/>
     </RequireAuth>
   );

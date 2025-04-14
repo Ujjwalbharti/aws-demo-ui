@@ -10,7 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 export default function QueuePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { token } = useGlobalContext();
+  const { token, deleteAuthToken } = useGlobalContext();
   const [visibilityTimeout, setVisibilityTimeout] = useState(0);
   const [queueName, setQueueName] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -26,6 +26,10 @@ export default function QueuePage() {
       },
       token as string
     );
+
+    if (response.status === 401) {
+      deleteAuthToken();
+    }
 
     if (response.status === 201) {
       redirect();

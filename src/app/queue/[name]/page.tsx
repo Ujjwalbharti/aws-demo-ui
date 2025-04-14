@@ -3,6 +3,7 @@
 import GoToDashboardButton from "@/component/buttons/GotoDashboardButton";
 import Logout from "@/component/buttons/Logout";
 import { Loading } from "@/component/Loading";
+import RequireAuth from "@/component/RequireAuth";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { Queue } from "@/models/queue";
 import { queueService } from "@/services/queueService";
@@ -18,7 +19,7 @@ interface QueueInfoProps {
 
 export default function QueueInfo({ params }: QueueInfoProps) {
   const { name } = use(params);
-  const { token } = useGlobalContext();
+  const { token, deleteAuthToken } = useGlobalContext();
   const [queue, setQueue] = useState<Queue | null>(null);
 
   useEffect(() => {
@@ -28,6 +29,9 @@ export default function QueueInfo({ params }: QueueInfoProps) {
           name,
           token as string
         );
+        if (response.status === 401) {
+          deleteAuthToken();
+        }
         setQueue(response.data as Queue);
       }
     }
@@ -35,21 +39,27 @@ export default function QueueInfo({ params }: QueueInfoProps) {
   }, [name, token]);
 
   if (!queue) {
-    return <Loading />;
+    return (
+      <RequireAuth>
+        <Loading />
+      </RequireAuth>
+    );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 p-4">
-      <Logout />
-      <GoToDashboardButton />
-      <div className="text-2xl font-bold">
-        <span>Queue Name : </span>
-        <p>{queue.queueName}</p>
+    <RequireAuth>
+      <div className="flex flex-col items-center justify-center gap-4 p-4">
+        <Logout />
+        <GoToDashboardButton />
+        <div className="text-2xl font-bold">
+          <span>Queue Name : </span>
+          <p>{queue.queueName}</p>
+        </div>
+        <div className="text-xl font-semibold">
+          <span>Visibility Timeout : </span>
+          <p>{queue.visibilityTimeout}</p>
+        </div>
       </div>
-      <div className="text-xl font-semibold">
-        <span>Visibility Timeout : </span>
-        <p>{queue.visibilityTimeout}</p>
-      </div>
-    </div>
+    </RequireAuth>
   );
 }
