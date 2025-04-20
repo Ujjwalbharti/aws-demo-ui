@@ -83,7 +83,7 @@ export const queueService: QueueService = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body : JSON.stringify(request),
+      body: JSON.stringify(request),
     });
 
     if (!response.ok) {
@@ -120,10 +120,9 @@ export const queueService: QueueService = {
       };
     }
 
-    const data = await response.json();
     return {
       status: response.status,
-      data: data as string,
+      data: null,
     };
   },
 };

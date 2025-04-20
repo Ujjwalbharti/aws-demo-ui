@@ -1,7 +1,10 @@
 "use client";
 
+import DeleteQueue from "@/component/buttons/DeleteQueue";
 import GoToDashboardButton from "@/component/buttons/GotoDashboardButton";
 import Logout from "@/component/buttons/Logout";
+import RecieveMessage from "@/component/buttons/RecieveMessage";
+import SendMessage from "@/component/buttons/SendMessage";
 import { Loading } from "@/component/Loading";
 import RequireAuth from "@/component/RequireAuth";
 import { useGlobalContext } from "@/context/GlobalContext";
@@ -48,16 +51,31 @@ export default function QueueInfo({ params }: QueueInfoProps) {
 
   return (
     <RequireAuth>
-      <div className="flex flex-col items-center justify-center gap-4 p-4">
-        <Logout />
-        <GoToDashboardButton />
-        <div className="text-2xl font-bold">
-          <span>Queue Name : </span>
-          <p>{queue.queueName}</p>
+      <Logout />
+      <GoToDashboardButton />
+      <div className="flex flex-col gap-10 mt-16 mx-10">
+        <div className="flex justify-start gap-x-56 border-2 border-gray-200 shadow-md bg-gray-100 p-2">
+          <div>
+            <div className="flex text-2xl font-bold">
+              <span>Queue Name : </span>
+              <p className="px-1 font-mono text-green-700">{queue.queueName}</p>
+            </div>
+            <div className="flex text-2xl font-bold">
+              <span>Visibility Timeout : </span>
+              <p className="px-1 font-mono text-green-700">
+                {queue.visibilityTimeout}
+              </p>
+            </div>
+          </div>
+          <div>
+            <DeleteQueue queueName={queue.queueName} />
+          </div>
         </div>
-        <div className="text-xl font-semibold">
-          <span>Visibility Timeout : </span>
-          <p>{queue.visibilityTimeout}</p>
+        <div className="flex gap-x-56 border-2 border-gray-200 shadow-md bg-gray-100 p-2">
+          <SendMessage queueName={queue.queueName} />
+        </div>
+        <div className="flex gap-x-56 border-2 border-gray-200 shadow-md bg-gray-100 p-2">
+          <RecieveMessage queueName={queue.queueName} />
         </div>
       </div>
     </RequireAuth>
