@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Logout from "@/component/buttons/Logout";
 import RequireAuth from "@/component/RequireAuth";
 import { queueService } from "@/services/queueService";
 import { useGlobalContext } from "@/context/GlobalContext";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Loading } from "@/component/Loading";
 
-export default function QueuePage() {
+function QueuePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { token, deleteAuthToken } = useGlobalContext();
@@ -39,9 +40,9 @@ export default function QueuePage() {
   };
 
   const redirect = () => {
-     const redirectTo = searchParams.get("redirect") ?? "/";
-     router.replace(redirectTo);
-  }
+    const redirectTo = searchParams.get("redirect") ?? "/";
+    router.replace(redirectTo);
+  };
 
   return (
     <RequireAuth>
@@ -89,5 +90,13 @@ export default function QueuePage() {
         </form>
       </div>
     </RequireAuth>
+  );
+}
+
+export default function QueuePage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <QueuePageContent />
+    </Suspense>
   );
 }

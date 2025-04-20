@@ -39,7 +39,7 @@ export default function QueueInfo({ params }: QueueInfoProps) {
       }
     }
     fetchQueue();
-  }, [name, token]);
+  }, [name, token, deleteAuthToken]);
 
   if (!queue) {
     return (

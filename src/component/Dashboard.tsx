@@ -32,7 +32,7 @@ export default function Dashboard({ token, deleteAuthToken }: DashboardProps) {
     };
 
     fetchQueues();
-  }, [token]);
+  }, [token, deleteAuthToken]);
 
   return (
     <div className="p-4">

@@ -40,6 +40,7 @@ export default function RecieveMessage({ queueName }: { queueName: string }) {
     }
     if (response.status === 200) {
       setMessages(response.data as MessageDTO[]);
+      setNumberOfItemOnPage(5);
     }
   };
 
